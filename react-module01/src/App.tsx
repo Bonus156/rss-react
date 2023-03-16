@@ -1,18 +1,24 @@
 import { NotFoundPage } from './pages/notFound';
 import { AboutPage } from './pages/about';
-import { MainPage } from './pages/mainPage';
+import { HomePage } from './pages/homePage';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Navigation } from './components/navigation';
+import { Navigation, HomeTitle, AboutTitle, NotFoundTitle } from './components/navigation';
 
 function App() {
   return (
     <>
-      <Navigation />
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<Navigation />}>
+          <Route index element={<HomeTitle />} />
+          <Route path="about" element={<AboutTitle />} />
+          <Route path="*" element={<NotFoundTitle />} />
+        </Route>
+      </Routes>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/*" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
