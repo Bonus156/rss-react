@@ -1,3 +1,16 @@
-export function Card() {
-  return <div className="border py-2 px-4 rounded flex flex-col items-center mb-2">Product</div>;
+import { Hero } from 'models/types';
+import React from 'react';
+
+interface HeroProps {
+  hero: Hero;
+}
+
+export function Card({ hero }: HeroProps) {
+  return (
+    <div className="border py-2 px-2 rounded w-[calc((100%-1rem)/3)] flex flex-col items-center">
+      <img src={hero.image} className="w-full" alt={hero.name} />
+      <p className="font-bold">{hero.name}</p>
+      <p>{hero.species}</p>
+    </div>
+  );
 }
