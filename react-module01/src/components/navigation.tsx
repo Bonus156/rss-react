@@ -6,10 +6,10 @@ export function HomeTitle() {
 }
 
 export function AboutTitle() {
-  return <span>About</span>;
+  return <span>About Us</span>;
 }
 export function NotFoundTitle() {
-  return <span>Page Not Found</span>;
+  return <span>Error 404. Page Not Found</span>;
 }
 
 export function Navigation() {
