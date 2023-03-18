@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export class SearchBar extends React.Component {
+type MyProps = unknown;
+type MyState = { value: string };
+
+export class SearchBar extends Component<MyProps, MyState> {
   constructor(props: string) {
     super(props);
     this.state = { value: localStorage.getItem('search') || '' };
@@ -10,7 +13,7 @@ export class SearchBar extends React.Component {
 
   componentDidMount() {
     this.setState({
-      value: localStorage.getItem('search'),
+      value: localStorage.getItem('search') || '',
     });
   }
 
