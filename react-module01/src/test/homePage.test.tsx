@@ -1,16 +1,11 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from '../App';
+import { HomePage } from '../pages/homePage';
 
-describe('App', () => {
-  test('is displays a card', () => {
-    render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
+describe('HomePage', () => {
+  test('is displays card', () => {
+    render(<HomePage />);
     expect(screen.getByText(/Alien/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Human/i)).toHaveLength(11);
   });
