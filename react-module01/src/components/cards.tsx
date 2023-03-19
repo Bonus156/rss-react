@@ -1,4 +1,4 @@
-import { Hero } from 'models/types';
+import { Hero } from '../models/types';
 import React from 'react';
 
 interface HeroProps {
