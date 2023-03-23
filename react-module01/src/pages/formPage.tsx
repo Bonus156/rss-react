@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Component, createRef } from 'react';
 
 type Props = {
   input: string;
 };
 
-export class FormPage extends React.Component {
+export class FormPage extends Component {
   inputName: React.RefObject<HTMLInputElement>;
   constructor(props: Props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.inputName = React.createRef<HTMLInputElement>();
+    this.inputName = createRef<HTMLInputElement>();
   }
 
   handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -20,10 +20,21 @@ export class FormPage extends React.Component {
     return (
       <form className="container mx-auto" onSubmit={this.handleSubmit}>
         <label>
-          What?
-          <input name="country" type="text" ref={this.inputName} />
+          <span>Type something</span>
+          <br />
+          <input
+            className="cursor-text border rounded px-4 py-2 mr-2"
+            name="country"
+            type="text"
+            defaultValue="Text..."
+            ref={this.inputName}
+          />
         </label>
-        <input type="submit" value="send" />
+        <input
+          className="cursor-pointer border rounded px-4 py-2 bg-green-400 hover:bg-green-500"
+          type="submit"
+          value="send"
+        />
       </form>
     );
   }
