@@ -11,6 +11,9 @@ export function AboutTitle() {
 export function NotFoundTitle() {
   return <span>Error 404. Page Not Found</span>;
 }
+export function FormTitle() {
+  return <span>Form</span>;
+}
 
 export function Navigation() {
   return (
@@ -23,6 +26,9 @@ export function Navigation() {
         </NavLink>
         <NavLink to="/about" className={({ isActive }) => (isActive ? 'text-blue-300' : '')}>
           About Us
+        </NavLink>
+        <NavLink to="/form" className={({ isActive }) => (isActive ? 'text-blue-300' : '')}>
+          Forms
         </NavLink>
       </span>
     </nav>
