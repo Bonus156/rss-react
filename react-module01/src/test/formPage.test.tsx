@@ -6,6 +6,6 @@ import { FormPage } from '../pages/formPage';
 describe('HomePage', () => {
   test('is shows type text', () => {
     render(<FormPage />);
-    expect(screen.getByText(/Type something/i)).toBeInTheDocument();
+    expect(screen.getByText(/Your name/i)).toBeInTheDocument();
   });
 });
