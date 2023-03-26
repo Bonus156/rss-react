@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { validateForm } from '../actions/validation';
+import { validateForm, validateImageFile } from '../actions/validation';
 import { Props, UserInfo } from '../models/types';
 import { FormCards } from '../components/formCards';
 
@@ -60,9 +60,11 @@ export class FormPage extends Component<unknown, State> {
   }
 
   pushInfo(newCard: UserInfo) {
-    const allCards = this.state.cardInfo;
-    allCards.push(newCard);
-    this.setState({ cardInfo: allCards });
+    if (this.validateInput()) {
+      const allCards = this.state.cardInfo;
+      allCards.push(newCard);
+      this.setState({ cardInfo: allCards });
+    }
   }
 
   handleSubmit: React.FormEventHandler<HTMLFormElement & FormFields> = (
@@ -79,15 +81,14 @@ export class FormPage extends Component<unknown, State> {
     this.setState({
       selectValue: this.selectCountry.current?.value,
     });
-    this.validateInput();
+    // this.validateInput();
     console.log({
       name: this.inputName.current?.value,
       date: this.inputDate.current?.value,
       country: this.selectCountry.current?.value,
       isAgree: this.inputIsAgree.current?.checked,
       question: this.inputRadioMale.current?.checked || this.inputRadioFemale.current?.checked,
-      file:
-        this.inputFile.current?.files == undefined ? '' : this.inputFile.current?.files[0]?.name,
+      file: this.inputFile.current?.files,
     });
   };
 
@@ -104,7 +105,7 @@ export class FormPage extends Component<unknown, State> {
       this.inputDate.current?.value,
       this.selectCountry.current?.value as string,
       !!this.inputRadioMale.current?.checked || !!this.inputRadioFemale.current?.checked,
-      !!(this.inputFile.current?.files as FileList)[0]?.name,
+      validateImageFile((this.inputFile.current?.files as FileList)[0]),
       !!this.inputIsAgree.current?.checked
     );
     this.setState({
@@ -113,10 +114,18 @@ export class FormPage extends Component<unknown, State> {
         errorBirthday: isDateCorrect ? '' : 'incorrect date',
         errorCountry: isCountrySelected ? '' : 'you must select a country',
         errorAnswer: isGenderSelected ? '' : 'gender must be selected',
-        errorUpload: isFileUploaded ? '' : 'upload any file',
+        errorUpload: isFileUploaded ? '' : 'upload .jpg or .pdf file',
         errorAgreement: isAgree ? '' : 'your agreement is required',
       },
     });
+    return (
+      isNameCorrect &&
+      isDateCorrect &&
+      isCountrySelected &&
+      isGenderSelected &&
+      isFileUploaded &&
+      isAgree
+    );
   }
 
   render() {
@@ -132,7 +141,7 @@ export class FormPage extends Component<unknown, State> {
               className="cursor-text border rounded px-4 py-2 m-2"
               name="name"
               type="text"
-              defaultValue="My Name is ..."
+              defaultValue="Name"
               ref={this.inputName}
             />
             <br />
@@ -181,7 +190,7 @@ export class FormPage extends Component<unknown, State> {
           <span>{errorAnswer}</span>
           <br />
           <label className="mr-2">
-            Upload file:
+            Upload image:
             <input
               className="cursor-text border rounded px-4 py-2 m-2"
               name="file"

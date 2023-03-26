@@ -15,3 +15,7 @@ export function validateForm(
     isAgree: isAgree,
   };
 }
+
+export function validateImageFile(file: File) {
+  return ['image/jpeg', 'image/png'].some((type) => file.type === type);
+}

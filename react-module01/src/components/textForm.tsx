@@ -26,7 +26,7 @@ export class TextForm extends Component {
             className="cursor-text border rounded px-4 py-2 mr-2"
             name="name"
             type="text"
-            defaultValue="My Name is ..."
+            defaultValue="Name"
             ref={this.inputName}
           />
         </label>
