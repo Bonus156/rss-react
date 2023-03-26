@@ -1,4 +1,5 @@
 import React, { Component, createRef } from 'react';
+import { validateForm } from '../actions/validation';
 
 type Props = {
   input: string;
@@ -13,7 +14,18 @@ type FormFields = {
   file: HTMLInputElement;
 };
 
-export class FormPage extends Component {
+type Errors = {
+  errorName: string;
+  errorBirthday: string;
+  errorCountry: string;
+};
+
+interface State {
+  selectValue: string | undefined;
+  errors: Errors;
+}
+
+export class FormPage extends Component<Props, State> {
   inputName: React.RefObject<HTMLInputElement>;
   inputDate: React.RefObject<HTMLInputElement>;
   selectCountry: React.RefObject<HTMLSelectElement>;
@@ -23,7 +35,14 @@ export class FormPage extends Component {
   inputFile: React.RefObject<HTMLInputElement>;
   constructor(props: Props) {
     super(props);
-    this.state = { selectValue: 'belarus' };
+    this.state = {
+      selectValue: 'unselect',
+      errors: {
+        errorName: '',
+        errorBirthday: '',
+        errorCountry: '',
+      },
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.inputName = createRef<HTMLInputElement>();
     this.inputDate = createRef<HTMLInputElement>();
@@ -38,6 +57,8 @@ export class FormPage extends Component {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    this.setState({ selectValue: this.selectCountry.current?.value });
+    this.validateInput();
     console.log({
       name: this.inputName.current?.value,
       date: this.inputDate.current?.value,
@@ -49,7 +70,23 @@ export class FormPage extends Component {
     });
   };
 
+  validateInput() {
+    const { isNameCorrect, isDateCorrect, isCountrySelected } = validateForm(
+      this.inputName.current?.value,
+      this.inputDate.current?.value,
+      this.selectCountry.current?.value as string
+    );
+    this.setState({
+      errors: {
+        errorName: isNameCorrect ? '' : 'incorrect name',
+        errorBirthday: isDateCorrect ? '' : 'incorrect date',
+        errorCountry: isCountrySelected ? '' : 'you must select a country',
+      },
+    });
+  }
+
   render() {
+    const { errorName, errorBirthday, errorCountry } = this.state.errors;
     return (
       <form className="container mx-auto" onSubmit={this.handleSubmit}>
         <label>
@@ -61,6 +98,8 @@ export class FormPage extends Component {
             defaultValue="My Name is ..."
             ref={this.inputName}
           />
+          <br />
+          <span>{errorName}</span>
         </label>
         <br />
         <label>
@@ -71,6 +110,8 @@ export class FormPage extends Component {
             type="date"
             ref={this.inputDate}
           />
+          <br />
+          <span>{errorBirthday}</span>
         </label>
         <br />
         <label>
@@ -80,11 +121,15 @@ export class FormPage extends Component {
             name="country"
             ref={this.selectCountry}
           >
+            <option value="unselect">Choose here</option>
             <option value="belarus">Belarus</option>
             <option value="ukraine">Ukraine</option>
             <option value="poland">Poland</option>
             <option value="russia">Russia</option>
+            <option value="other">Other</option>
           </select>
+          <br />
+          <span>{errorCountry}</span>
         </label>
         <br />
         <label className="cursor-pointer">
