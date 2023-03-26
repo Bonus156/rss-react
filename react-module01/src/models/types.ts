@@ -18,3 +18,19 @@ export interface Hero {
   url: string;
   created: string;
 }
+
+export interface Props {
+  setCards: StateForm;
+}
+
+export interface UserInfo {
+  userName: string;
+  birthday: string;
+  country: string;
+  isMale: boolean;
+  image: File;
+}
+
+export interface StateForm {
+  cardsList: UserInfo[];
+}
