@@ -25,6 +25,7 @@ interface State {
   selectValue: string | undefined;
   errors: Errors;
   cardInfo: UserInfo[];
+  confirmation: string;
 }
 
 export class FormPage extends Component<unknown, State> {
@@ -35,6 +36,7 @@ export class FormPage extends Component<unknown, State> {
   inputRadioMale: React.RefObject<HTMLInputElement>;
   inputRadioFemale: React.RefObject<HTMLInputElement>;
   inputFile: React.RefObject<HTMLInputElement>;
+  formRef: React.RefObject<HTMLFormElement>;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -48,8 +50,10 @@ export class FormPage extends Component<unknown, State> {
         errorAgreement: '',
       },
       cardInfo: [],
+      confirmation: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.formRef = createRef<HTMLFormElement>();
     this.inputName = createRef<HTMLInputElement>();
     this.inputDate = createRef<HTMLInputElement>();
     this.selectCountry = createRef<HTMLSelectElement>();
@@ -63,7 +67,11 @@ export class FormPage extends Component<unknown, State> {
     if (this.validateInput()) {
       const allCards = this.state.cardInfo;
       allCards.push(newCard);
-      this.setState({ cardInfo: allCards });
+      this.setState({ cardInfo: allCards, confirmation: 'Submit Successfull' });
+      setTimeout(() => {
+        this.setState({ confirmation: '' });
+      }, 3000);
+      this.formRef.current?.reset();
     }
   }
 
@@ -80,15 +88,6 @@ export class FormPage extends Component<unknown, State> {
     });
     this.setState({
       selectValue: this.selectCountry.current?.value,
-    });
-    // this.validateInput();
-    console.log({
-      name: this.inputName.current?.value,
-      date: this.inputDate.current?.value,
-      country: this.selectCountry.current?.value,
-      isAgree: this.inputIsAgree.current?.checked,
-      question: this.inputRadioMale.current?.checked || this.inputRadioFemale.current?.checked,
-      file: this.inputFile.current?.files,
     });
   };
 
@@ -131,21 +130,20 @@ export class FormPage extends Component<unknown, State> {
   render() {
     const { errorName, errorBirthday, errorCountry, errorAnswer, errorUpload, errorAgreement } =
       this.state.errors;
-    // const cardsList = { cardsList: [this.state.cardInfo] };
+    const confirmation = this.state.confirmation;
     return (
       <>
-        <form className="container mx-auto" onSubmit={this.handleSubmit}>
+        <form className="container mx-auto" ref={this.formRef} onSubmit={this.handleSubmit}>
           <label>
             <span>Your name</span>
             <input
               className="cursor-text border rounded px-4 py-2 m-2"
               name="name"
               type="text"
-              defaultValue="Name"
               ref={this.inputName}
             />
             <br />
-            <span>{errorName}</span>
+            <span className="text-red-700">{errorName}</span>
           </label>
           <br />
           <label>
@@ -157,7 +155,7 @@ export class FormPage extends Component<unknown, State> {
               ref={this.inputDate}
             />
             <br />
-            <span>{errorBirthday}</span>
+            <span className="text-red-700">{errorBirthday}</span>
           </label>
           <br />
           <label>
@@ -175,7 +173,7 @@ export class FormPage extends Component<unknown, State> {
               <option value="other">Other</option>
             </select>
             <br />
-            <span>{errorCountry}</span>
+            <span className="text-red-700">{errorCountry}</span>
           </label>
           <br />
           <label className="cursor-pointer mr-4 my-4">
@@ -187,7 +185,7 @@ export class FormPage extends Component<unknown, State> {
             Female
           </label>
           <br />
-          <span>{errorAnswer}</span>
+          <span className="text-red-700">{errorAnswer}</span>
           <br />
           <label className="mr-2">
             Upload image:
@@ -198,7 +196,7 @@ export class FormPage extends Component<unknown, State> {
               ref={this.inputFile}
             />
             <br />
-            <span>{errorUpload}</span>
+            <span className="text-red-700">{errorUpload}</span>
           </label>
           <br />
           <label className="cursor-pointer">
@@ -206,13 +204,14 @@ export class FormPage extends Component<unknown, State> {
             <input className="m-2" name="isAgree" type="checkbox" ref={this.inputIsAgree} />
           </label>
           <br />
-          <span>{errorAgreement}</span>
+          <span className="text-red-700">{errorAgreement}</span>
           <br />
           <input
             className="cursor-pointer border rounded px-4 py-2 bg-green-400 hover:bg-green-500"
             type="submit"
             value="send"
           />
+          <span className="ml-2 font-bold text-green-800">{confirmation}</span>
         </form>
         <FormCards cardsList={this.state.cardInfo} />
       </>
