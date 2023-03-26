@@ -19,10 +19,6 @@ export interface Hero {
   created: string;
 }
 
-export interface Props {
-  setCards: StateForm;
-}
-
 export interface UserInfo {
   userName: string;
   birthday: string;
@@ -31,6 +27,6 @@ export interface UserInfo {
   image: File;
 }
 
-export interface StateForm {
+export interface CardsState {
   cardsList: UserInfo[];
 }

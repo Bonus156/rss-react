@@ -1,18 +1,12 @@
 import { Component } from 'react';
 import { UserCard } from './userCard';
-import { UserInfo, StateForm } from '../models/types';
+import { CardsState } from '../models/types';
+import { v1 as uuidv1 } from 'uuid';
 
-export class FormCards extends Component<StateForm, StateForm> {
-  constructor(props: StateForm) {
+export class FormCards extends Component<CardsState, CardsState> {
+  constructor(props: CardsState) {
     super(props);
-    this.state = this.props;
-    this.setCards = this.setCards.bind(this);
-  }
-
-  setCards(newCard: UserInfo) {
-    const cardsArray = [...this.state.cardsList];
-    cardsArray.push(newCard);
-    this.setState({ cardsList: cardsArray });
+    this.state = { ...this.props };
   }
 
   render() {
@@ -22,7 +16,7 @@ export class FormCards extends Component<StateForm, StateForm> {
         <div className="flex flex-wrap gap-2">
           {cardsList.map((card) => (
             <UserCard
-              key={card.userName}
+              key={uuidv1()}
               userName={card.userName}
               birthday={card.birthday}
               country={card.country}

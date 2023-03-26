@@ -17,6 +17,8 @@ export function validateForm(
 }
 
 export function validateImageFile(file: File) {
-  if (!file) return false;
+  if (!file) {
+    return false;
+  }
   return ['image/jpeg', 'image/png'].some((type) => file.type === type);
 }

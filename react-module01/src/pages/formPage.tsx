@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { validateForm, validateImageFile } from '../actions/validation';
-import { Props, UserInfo } from '../models/types';
+import { CardsState, UserInfo } from '../models/types';
 import { FormCards } from '../components/formCards';
 
 type FormFields = {
@@ -28,7 +28,11 @@ interface State {
   confirmation: string;
 }
 
-export class FormPage extends Component<unknown, State> {
+interface FormPageProps {
+  setCards: CardsState;
+}
+
+export class FormPage extends Component<FormPageProps, State> {
   inputName: React.RefObject<HTMLInputElement>;
   inputDate: React.RefObject<HTMLInputElement>;
   selectCountry: React.RefObject<HTMLSelectElement>;
@@ -37,7 +41,8 @@ export class FormPage extends Component<unknown, State> {
   inputRadioFemale: React.RefObject<HTMLInputElement>;
   inputFile: React.RefObject<HTMLInputElement>;
   formRef: React.RefObject<HTMLFormElement>;
-  constructor(props: Props) {
+
+  constructor(props: FormPageProps) {
     super(props);
     this.state = {
       selectValue: 'unselect',
@@ -52,6 +57,7 @@ export class FormPage extends Component<unknown, State> {
       cardInfo: [],
       confirmation: '',
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formRef = createRef<HTMLFormElement>();
     this.inputName = createRef<HTMLInputElement>();
@@ -65,9 +71,10 @@ export class FormPage extends Component<unknown, State> {
 
   pushInfo(newCard: UserInfo) {
     if (this.validateInput()) {
-      const allCards = this.state.cardInfo;
-      allCards.push(newCard);
-      this.setState({ cardInfo: allCards, confirmation: 'Submit Successfull' });
+      this.state.cardInfo.push(newCard);
+      this.setState({
+        confirmation: 'Submit Successfull',
+      });
       setTimeout(() => {
         this.setState({ confirmation: '' });
       }, 3000);
