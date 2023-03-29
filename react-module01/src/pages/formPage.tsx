@@ -91,7 +91,7 @@ export class FormPage extends Component<FormPageProps, State> {
       birthday: this.inputDate.current?.value as string,
       country: this.selectCountry.current?.value as string,
       isMale: !!this.inputRadioMale.current?.checked,
-      image: (this.inputFile.current?.files as FileList)[0] as File,
+      image: (this.inputFile.current?.files as FileList)[0],
     });
     this.setState({
       selectValue: this.selectCountry.current?.value,

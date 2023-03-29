@@ -16,7 +16,7 @@ export function validateForm(
   };
 }
 
-export function validateImageFile(file: File) {
+export function validateImageFile(file: File | undefined) {
   if (!file) {
     return false;
   }
