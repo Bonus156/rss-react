@@ -7,7 +7,7 @@ import { CardsState } from '../models/types';
 describe('HomePage', () => {
   test('is shows form type text with empty cardList', () => {
     const cardList: CardsState = { cardsList: [] };
-    render(<FormPage setCards={cardList} />);
+    render(<FormPage cards={cardList} />);
     expect(screen.getByText(/Your name/i)).toBeInTheDocument();
     expect(screen.getByText(/Your birthday/i)).toBeInTheDocument();
     expect(screen.getAllByRole('textbox')).toHaveLength(1);

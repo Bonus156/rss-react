@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/form" element={<FormPage setCards={{ cardsList: [] }} />} />
+        <Route path="/form" element={<FormPage cards={{ cardsList: [] }} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

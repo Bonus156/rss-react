@@ -29,7 +29,7 @@ interface State {
 }
 
 interface FormPageProps {
-  setCards: CardsState;
+  cards: CardsState;
 }
 
 export class FormPage extends Component<FormPageProps, State> {
