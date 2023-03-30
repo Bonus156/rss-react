@@ -5,7 +5,7 @@ export function SearchBar() {
 
   useEffect(() => {
     return localStorage.setItem('search', value);
-  }, [value]);
+  });
 
   return (
     <div className="py-2 relative w-1/2 text-gray-600">

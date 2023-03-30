@@ -140,7 +140,11 @@ export class FormPage extends Component<FormPageProps, State> {
     const confirmation = this.state.confirmation;
     return (
       <>
-        <form className="container mx-auto" ref={this.formRef} onSubmit={this.handleSubmit}>
+        <form
+          className="container mx-auto flex flex-col"
+          ref={this.formRef}
+          onSubmit={this.handleSubmit}
+        >
           <label>
             <span>Your name</span>
             <input
@@ -149,10 +153,8 @@ export class FormPage extends Component<FormPageProps, State> {
               type="text"
               ref={this.inputName}
             />
-            <br />
             <span className="text-red-700">{errorName}</span>
           </label>
-          <br />
           <label>
             <span>Your birthday</span>
             <input
@@ -161,10 +163,8 @@ export class FormPage extends Component<FormPageProps, State> {
               type="date"
               ref={this.inputDate}
             />
-            <br />
             <span className="text-red-700">{errorBirthday}</span>
           </label>
-          <br />
           <label>
             <span>Choose country:</span>
             <select
@@ -179,46 +179,43 @@ export class FormPage extends Component<FormPageProps, State> {
               <option value="russia">Russia</option>
               <option value="other">Other</option>
             </select>
-            <br />
             <span className="text-red-700">{errorCountry}</span>
           </label>
-          <br />
-          <label className="cursor-pointer mr-4 my-4">
-            <input className="mr-2" type="radio" name="question" ref={this.inputRadioMale} />
-            Male
-          </label>
-          <label className="cursor-pointer my-4">
-            <input className="mr-2" type="radio" name="question" ref={this.inputRadioFemale} />
-            Female
-          </label>
-          <br />
-          <span className="text-red-700">{errorAnswer}</span>
-          <br />
+          <div>
+            <label className="cursor-pointer mr-4 my-4">
+              <input className="mr-2" type="radio" name="question" ref={this.inputRadioMale} />
+              Male
+            </label>
+            <label className="cursor-pointer mr-4 my-4">
+              <input className="mr-2" type="radio" name="question" ref={this.inputRadioFemale} />
+              Female
+            </label>
+            <span className="text-red-700">{errorAnswer}</span>
+          </div>
           <label className="mr-2">
             Upload image:
             <input
               className="cursor-text border rounded px-4 py-2 m-2"
               name="file"
+              accept="image/*"
               type="file"
               ref={this.inputFile}
             />
-            <br />
             <span className="text-red-700">{errorUpload}</span>
           </label>
-          <br />
           <label className="cursor-pointer">
             <span>Agree:</span>
             <input className="m-2" name="isAgree" type="checkbox" ref={this.inputIsAgree} />
+            <span className="text-red-700">{errorAgreement}</span>
           </label>
-          <br />
-          <span className="text-red-700">{errorAgreement}</span>
-          <br />
-          <input
-            className="cursor-pointer border rounded px-4 py-2 bg-green-400 hover:bg-green-500"
-            type="submit"
-            value="send"
-          />
-          <span className="ml-2 font-bold text-green-800">{confirmation}</span>
+          <div>
+            <input
+              className="cursor-pointer border font-semibold rounded px-4 py-2 w-fit bg-green-400 hover:bg-green-500"
+              type="submit"
+              value="Submit"
+            />
+            <span className="ml-2 font-bold text-green-800">{confirmation}</span>
+          </div>
         </form>
         <FormCards cardsList={this.state.cardInfo} />
       </>
