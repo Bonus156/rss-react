@@ -110,7 +110,7 @@ export function FormPage() {
             type="text"
             ref={inputName}
           />
-          <span className="text-red-700">{errorName}</span>
+          {errorName && <span className="text-red-700">{errorName}</span>}
         </label>
         <label>
           <span>Your birthday</span>
@@ -120,7 +120,7 @@ export function FormPage() {
             type="date"
             ref={inputDate}
           />
-          <span className="text-red-700">{errorBirthday}</span>
+          {errorBirthday && <span className="text-red-700">{errorBirthday}</span>}
         </label>
         <label>
           <span>Choose country:</span>
@@ -136,7 +136,7 @@ export function FormPage() {
             <option value="russia">Russia</option>
             <option value="other">Other</option>
           </select>
-          <span className="text-red-700">{errorCountry}</span>
+          {errorCountry && <span className="text-red-700">{errorCountry}</span>}
         </label>
         <div>
           <label className="cursor-pointer mr-4 my-4">
@@ -147,7 +147,7 @@ export function FormPage() {
             <input className="mr-2" type="radio" name="question" ref={inputRadioFemale} />
             Female
           </label>
-          <span className="text-red-700">{errorAnswer}</span>
+          {errorAnswer && <span className="text-red-700">{errorAnswer}</span>}
         </div>
         <label className="mr-2">
           Upload image:
@@ -158,12 +158,12 @@ export function FormPage() {
             type="file"
             ref={inputFile}
           />
-          <span className="text-red-700">{errorUpload}</span>
+          {errorUpload && <span className="text-red-700">{errorUpload}</span>}
         </label>
         <label className="cursor-pointer">
           <span>Agree:</span>
           <input className="m-2" name="isAgree" type="checkbox" ref={inputIsAgree} />
-          <span className="text-red-700">{errorAgreement}</span>
+          {errorAgreement && <span className="text-red-700">{errorAgreement}</span>}
         </label>
         <div>
           <input
@@ -171,7 +171,7 @@ export function FormPage() {
             type="submit"
             value="Submit"
           />
-          <span className="ml-2 font-bold text-green-800">{confirmation}</span>
+          {confirmation && <span className="ml-2 font-bold text-green-800">{confirmation}</span>}
         </div>
       </form>
       <FormCards cardsList={cardInfo} />
