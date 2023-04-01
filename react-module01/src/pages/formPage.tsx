@@ -22,7 +22,7 @@ export function FormPage() {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormFields>({ mode: 'onSubmit' });
+  } = useForm<FormFields>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     const newCard = {
