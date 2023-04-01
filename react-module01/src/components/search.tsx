@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+
+const useUnmount = (fn: () => void) => {
+  const fnRef = useRef(fn);
+  fnRef.current = fn;
+
+  useEffect(() => () => fnRef.current(), []);
+};
 
 export function SearchBar() {
   const [value, changeHandler] = useState(localStorage.getItem('search') || '');
 
-  useEffect(() => {
+  useUnmount(() => {
     return localStorage.setItem('search', value);
   });
 
