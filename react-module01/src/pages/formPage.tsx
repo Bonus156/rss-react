@@ -1,11 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { validateForm, validateImageFile } from '../actions/validation';
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { validateImageFile } from '../actions/validation';
 import { UserInfo } from '../models/types';
 import { FormCards } from '../components/formCards';
 
 type FormFields = {
-  name: HTMLInputElement;
-  date: HTMLInputElement;
+  userName: HTMLInputElement;
+  birthday: HTMLInputElement;
   country: HTMLSelectElement;
   isAgree: HTMLInputElement;
   question: HTMLInputElement;
@@ -13,121 +14,74 @@ type FormFields = {
 };
 
 export function FormPage() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const inputName = useRef<HTMLInputElement>(null);
-  const inputDate = useRef<HTMLInputElement>(null);
-  const selectCountry = useRef<HTMLSelectElement>(null);
-  const inputIsAgree = useRef<HTMLInputElement>(null);
-  const inputRadioMale = useRef<HTMLInputElement>(null);
-  const inputRadioFemale = useRef<HTMLInputElement>(null);
-  const inputFile = useRef<HTMLInputElement>(null);
-
-  const [selectValue, setSelectVal] = useState('unselect');
-  const [errors, setErrorsText] = useState({
-    errorName: '',
-    errorBirthday: '',
-    errorCountry: '',
-    errorAnswer: '',
-    errorUpload: '',
-    errorAgreement: '',
-  });
   const [cardInfo, setCards] = useState<UserInfo[]>([]);
   const [confirmation, setConfirmText] = useState('');
 
-  const validateInput = useCallback(() => {
-    const {
-      isNameCorrect,
-      isDateCorrect,
-      isCountrySelected,
-      isGenderSelected,
-      isFileUploaded,
-      isAgree,
-    } = validateForm(
-      inputName.current?.value,
-      inputDate.current?.value,
-      selectCountry.current?.value as string,
-      !!inputRadioMale.current?.checked || !!inputRadioFemale.current?.checked,
-      validateImageFile((inputFile.current?.files as FileList)[0]),
-      !!inputIsAgree.current?.checked
-    );
-    setErrorsText({
-      errorName: isNameCorrect ? '' : 'incorrect name',
-      errorBirthday: isDateCorrect ? '' : 'incorrect date',
-      errorCountry: isCountrySelected ? '' : 'you must select a country',
-      errorAnswer: isGenderSelected ? '' : 'gender must be selected',
-      errorUpload: isFileUploaded ? '' : 'upload .jpg or .pdf file',
-      errorAgreement: isAgree ? '' : 'your agreement is required',
-    });
-    return (
-      isNameCorrect &&
-      isDateCorrect &&
-      isCountrySelected &&
-      isGenderSelected &&
-      isFileUploaded &&
-      isAgree
-    );
-  }, []);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormFields>({ mode: 'onSubmit' });
 
-  const pushInfo = useCallback(
-    (newCard: UserInfo) => {
-      if (validateInput()) {
-        setCards([...cardInfo, newCard]);
-        setConfirmText('Submit Successfull');
-        setTimeout(() => {
-          setConfirmText('');
-        }, 3000);
-        formRef.current?.reset();
-      }
-    },
-    [validateInput, cardInfo]
-  );
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+    const newCard = {
+      userName: data.userName,
+      birthday: data.birthday.toDateString(),
+      country: data.country,
+      isMale: data.question === 'male',
+      image: data.file[0],
+    };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement & FormFields> = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setSelectVal(selectCountry.current?.value as string);
-      pushInfo({
-        userName: inputName.current?.value as string,
-        birthday: inputDate.current?.value as string,
-        country: selectValue,
-        isMale: !!inputRadioMale.current?.checked,
-        image: (inputFile.current?.files as FileList)[0],
-      });
-    },
-    [pushInfo, selectValue]
-  );
+    setCards([...cardInfo, newCard]);
+    setConfirmText('Submit Successfull');
+    setTimeout(() => {
+      setConfirmText('');
+    }, 3000);
+    reset();
+  };
 
-  const { errorName, errorBirthday, errorCountry, errorAnswer, errorUpload, errorAgreement } =
-    errors;
   return (
     <>
-      <form className="container mx-auto flex flex-col" ref={formRef} onSubmit={handleSubmit}>
+      <form className="container mx-auto flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <label>
           <span>Your name</span>
           <input
             className="cursor-text border rounded px-4 py-2 m-2"
-            name="name"
             type="text"
-            ref={inputName}
+            {...register('userName', {
+              required: 'incorrect name',
+              minLength: { value: 3, message: 'Min 3 letters' },
+              pattern: { value: /^[A-Z]/, message: 'First letter should be uppercase' },
+            })}
           />
-          {errorName && <span className="text-red-700">{errorName}</span>}
+          {errors?.userName && (
+            <span className="text-red-700">{errors?.userName?.message?.toString()}</span>
+          )}
         </label>
         <label>
           <span>Your birthday</span>
           <input
             className="cursor-text border rounded px-4 py-2 m-2"
-            name="date"
             type="date"
-            ref={inputDate}
+            {...register('birthday', {
+              required: 'incorrect date',
+              valueAsDate: true,
+              validate: (value) => Date.parse(value) < Date.now() || 'should be before today',
+            })}
           />
-          {errorBirthday && <span className="text-red-700">{errorBirthday}</span>}
+          {errors?.birthday && (
+            <span className="text-red-700">{errors?.birthday?.message?.toString()}</span>
+          )}
         </label>
         <label>
           <span>Choose country:</span>
           <select
             className="cursor-pointer border rounded px-4 py-2 m-2"
-            name="country"
-            ref={selectCountry}
+            {...register('country', {
+              required: 'you must select a country',
+              validate: (value: string) => value !== 'unselect' || 'you must select a country',
+            })}
           >
             <option value="unselect">Choose here</option>
             <option value="belarus">Belarus</option>
@@ -136,34 +90,52 @@ export function FormPage() {
             <option value="russia">Russia</option>
             <option value="other">Other</option>
           </select>
-          {errorCountry && <span className="text-red-700">{errorCountry}</span>}
+          {errors?.country && (
+            <span className="text-red-700">{errors?.country?.message?.toString()}</span>
+          )}
         </label>
         <div>
           <label className="cursor-pointer mr-4 my-4">
-            <input className="mr-2" type="radio" name="question" ref={inputRadioMale} />
+            <input
+              className="mr-2"
+              type="radio"
+              {...register('question', { required: 'gender must be selected' })}
+              value="male"
+            />
             Male
           </label>
           <label className="cursor-pointer mr-4 my-4">
-            <input className="mr-2" type="radio" name="question" ref={inputRadioFemale} />
+            <input
+              className="mr-2"
+              type="radio"
+              {...register('question', { required: 'gender must be selected' })}
+              value="female"
+            />
             Female
           </label>
-          {errorAnswer && <span className="text-red-700">{errorAnswer}</span>}
+          {errors.question && <span className="text-red-700">{errors.question.message}</span>}
         </div>
         <label className="mr-2">
           Upload image:
           <input
             className="cursor-text border rounded px-4 py-2 m-2"
-            name="file"
             accept="image/*"
             type="file"
-            ref={inputFile}
+            {...register('file', {
+              required: 'choose image file',
+              validate: (value) => validateImageFile(value[0]) || 'upload .jpg or .png file',
+            })}
           />
-          {errorUpload && <span className="text-red-700">{errorUpload}</span>}
+          {errors?.file && <span className="text-red-700">{errors.file.message}</span>}
         </label>
         <label className="cursor-pointer">
           <span>Agree:</span>
-          <input className="m-2" name="isAgree" type="checkbox" ref={inputIsAgree} />
-          {errorAgreement && <span className="text-red-700">{errorAgreement}</span>}
+          <input
+            className="m-2"
+            type="checkbox"
+            {...register('isAgree', { required: 'your agreement is required' })}
+          />
+          {errors?.isAgree && <span className="text-red-700">{errors.isAgree.message}</span>}
         </label>
         <div>
           <input

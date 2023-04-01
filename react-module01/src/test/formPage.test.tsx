@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { FormPage } from '../pages/formPage';
 
-describe('HomePage', () => {
+describe('FormPage', () => {
   test('is shows form type text with empty cardList', () => {
     render(<FormPage />);
     expect(screen.getByText(/Your name/i)).toBeInTheDocument();
