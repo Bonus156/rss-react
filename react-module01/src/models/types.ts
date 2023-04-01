@@ -27,6 +27,6 @@ export interface UserInfo {
   image: File;
 }
 
-export interface CardsState {
+export interface FormCardsProps {
   cardsList: UserInfo[];
 }

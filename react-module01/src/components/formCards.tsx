@@ -1,8 +1,8 @@
 import { UserCard } from './userCard';
-import { CardsState } from '../models/types';
+import { FormCardsProps } from '../models/types';
 import { v1 as uuidv1 } from 'uuid';
 
-export function FormCards(cards: CardsState) {
+export function FormCards(cards: FormCardsProps) {
   const cardsList = cards.cardsList;
   return (
     <div className="container mx-auto pt-5">

@@ -14,8 +14,8 @@ type FormFields = {
 };
 
 export function FormPage() {
-  const [cardInfo, setCards] = useState<UserInfo[]>([]);
-  const [confirmation, setConfirmText] = useState('');
+  const [cards, setCards] = useState<UserInfo[]>([]);
+  const [confirmText, setConfirmText] = useState('');
 
   const {
     register,
@@ -33,7 +33,7 @@ export function FormPage() {
       image: data.file[0],
     };
 
-    setCards([...cardInfo, newCard]);
+    setCards([...cards, newCard]);
     setConfirmText('Submit Successfull');
     setTimeout(() => {
       setConfirmText('');
@@ -143,10 +143,10 @@ export function FormPage() {
             type="submit"
             value="Submit"
           />
-          {confirmation && <span className="ml-2 font-bold text-green-800">{confirmation}</span>}
+          {confirmText && <span className="ml-2 font-bold text-green-800">{confirmText}</span>}
         </div>
       </form>
-      <FormCards cardsList={cardInfo} />
+      <FormCards cardsList={cards} />
     </>
   );
 }

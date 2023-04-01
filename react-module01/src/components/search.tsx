@@ -8,10 +8,10 @@ const useUnmount = (fn: () => void) => {
 };
 
 export function SearchBar() {
-  const [value, changeHandler] = useState(localStorage.getItem('search') || '');
+  const [inputValue, setInputValue] = useState(localStorage.getItem('search') || '');
 
   useUnmount(() => {
-    return localStorage.setItem('search', value);
+    return localStorage.setItem('search', inputValue);
   });
 
   return (
@@ -21,8 +21,8 @@ export function SearchBar() {
         type="search"
         name="search"
         placeholder="Search"
-        value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeHandler(e.target.value)}
+        value={inputValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
       />
       <button
         type="submit"
