@@ -1,9 +1,13 @@
 import { UserCard } from './userCard';
-import { FormCardsProps } from '../models/types';
+import { UserInfo } from '../models/types';
 import { v1 as uuidv1 } from 'uuid';
 
+export interface FormCardsProps {
+  cardsList: UserInfo[];
+}
+
 export function FormCards(cards: FormCardsProps) {
-  const cardsList = cards.cardsList;
+  const { cardsList } = cards;
   return (
     <div className="container mx-auto pt-5">
       <div className="flex flex-wrap gap-2">

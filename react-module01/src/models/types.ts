@@ -26,7 +26,3 @@ export interface UserInfo {
   isMale: boolean;
   image: File;
 }
-
-export interface FormCardsProps {
-  cardsList: UserInfo[];
-}
