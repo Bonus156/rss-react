@@ -5,12 +5,12 @@ import { UserInfo } from '../models/types';
 import { FormCards } from '../components/formCards';
 
 type FormFields = {
-  userName: HTMLInputElement;
-  birthday: HTMLInputElement;
-  country: HTMLSelectElement;
-  isAgree: HTMLInputElement;
-  question: HTMLInputElement;
-  file: HTMLInputElement;
+  userName: string;
+  birthday: Date;
+  country: string;
+  isAgree: boolean;
+  question: string;
+  file: FileList;
 };
 
 export function FormPage() {
@@ -67,7 +67,7 @@ export function FormPage() {
             {...register('birthday', {
               required: 'Choose birthday date',
               valueAsDate: true,
-              validate: (value) => Date.parse(value) < Date.now() || 'Should be before today',
+              validate: (value) => value.valueOf() < Date.now() || 'Should be before today',
             })}
           />
           {errors?.birthday && (
@@ -113,7 +113,9 @@ export function FormPage() {
             />
             Female
           </label>
-          {errors.question && <span className="text-red-700">{errors.question.message}</span>}
+          {errors?.question && (
+            <span className="text-red-700">{errors?.question?.message?.toString()}</span>
+          )}
         </div>
         <label className="mr-2">
           Upload image:
@@ -126,7 +128,7 @@ export function FormPage() {
               validate: (value) => validateImageFile(value[0]) || 'Upload .jpg or .png file',
             })}
           />
-          {errors?.file && <span className="text-red-700">{errors.file.message}</span>}
+          {errors?.file && <span className="text-red-700">{errors.file.message?.toString()}</span>}
         </label>
         <label className="cursor-pointer">
           <span>Agree:</span>
@@ -135,7 +137,9 @@ export function FormPage() {
             type="checkbox"
             {...register('isAgree', { required: 'Your agreement is required' })}
           />
-          {errors?.isAgree && <span className="text-red-700">{errors.isAgree.message}</span>}
+          {errors?.isAgree && (
+            <span className="text-red-700">{errors.isAgree.message?.toString()}</span>
+          )}
         </label>
         <div>
           <input
