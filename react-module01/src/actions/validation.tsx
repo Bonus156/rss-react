@@ -7,7 +7,7 @@ export function validateForm(
   isAgree: boolean
 ) {
   return {
-    isNameCorrect: !!name && /^[A-Z]/.test(name) && name.length > 3,
+    isNameCorrect: !!name && /^[A-Z]/.test(name) && name.length >= 3,
     isDateCorrect: !!date && Date.parse(date) < Date.now(),
     isCountrySelected: country !== 'unselect',
     isGenderSelected: isGender,
