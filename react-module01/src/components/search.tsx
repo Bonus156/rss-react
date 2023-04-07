@@ -19,7 +19,7 @@ export function SearchBar({ setInputValue }: SearchProps) {
         className="border-2 border-gray-300 bg-white w-full h-10 px-5 pr-16 rounded-lg text-base focus:outline-none"
         type="search"
         name="search"
-        placeholder="Search"
+        placeholder="Search by name"
         value={searchValue}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
       />

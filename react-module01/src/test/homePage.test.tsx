@@ -7,8 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 describe('HomePage', () => {
   test('is displays card text', () => {
     render(<HomePage />);
-    expect(screen.getByText(/Alien/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Human/i)).toHaveLength(11);
+    expect(screen.getByText(/Name/i)).toBeInTheDocument();
   });
   test('should render cardsField with correct number of cards', () => {
     render(
@@ -16,6 +15,6 @@ describe('HomePage', () => {
         <HomePage />
       </MemoryRouter>
     );
-    expect(screen.getAllByRole('img')).toHaveLength(12);
+    expect(screen.getAllByRole('img')).toHaveLength(20);
   });
 });

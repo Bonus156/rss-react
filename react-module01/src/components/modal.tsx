@@ -18,7 +18,7 @@ export function Modal({ hero, isVisible, setVisible }: ModalProps) {
       onClick={handleClick}
     >
       <div
-        className="border py-2 px-2 rounded w-1/2 flex flex-col items-center m-auto lg:w-1/3"
+        className="border bg-white py-2 px-2 rounded w-1/2 flex flex-col items-center m-auto lg:w-1/3"
         onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         <img src={hero.image} className="w-full" alt={hero.name} />
@@ -26,7 +26,11 @@ export function Modal({ hero, isVisible, setVisible }: ModalProps) {
           <span className="font-normal">Name: </span>
           {hero.name}
         </p>
-        <p>{hero.species}</p>
+        <p>Origin: {hero.origin.name}</p>
+        <p>Status: {hero.status}</p>
+        <p>Species: {hero.species}</p>
+        <p>Gender: {hero.gender}</p>
+        <p>Location: {hero.location.name}</p>
       </div>
     </div>
   );

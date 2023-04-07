@@ -25,7 +25,9 @@ export function HomePage() {
       }
       setHeroes(data);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     } finally {
       setIsLoading(false);
     }
