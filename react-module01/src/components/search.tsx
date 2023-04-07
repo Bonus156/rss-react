@@ -7,10 +7,6 @@ interface SearchProps {
 export function SearchBar({ setInputValue }: SearchProps) {
   const [searchValue, setSearchValue] = useState(localStorage.getItem('search') || '');
 
-  // useUnmount(() => {
-  //   return localStorage.setItem('search', inputValue);
-  // });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem('search', searchValue);
