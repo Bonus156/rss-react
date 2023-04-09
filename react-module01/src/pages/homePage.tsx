@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SearchBar } from '../components/search';
 import { Card } from '../components/cards';
-import { getAllCharacters, getCharacters } from '../models/api';
+import { getCharacters, getCharactersByName } from '../api/api';
 import { Character } from '../models/types';
 import { Modal } from '../components/modal';
 
@@ -19,9 +19,9 @@ export function HomePage() {
     let data: Character[];
     try {
       if (searchValue) {
-        data = await getCharacters(searchValue);
+        data = await getCharactersByName(searchValue);
       } else {
-        data = await getAllCharacters();
+        data = await getCharacters();
       }
       setHeroes(data);
     } catch (err) {

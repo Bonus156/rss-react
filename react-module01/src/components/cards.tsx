@@ -1,6 +1,5 @@
 import React from 'react';
 import { Character } from '../models/types';
-// import { ModalProps } from './modal';
 
 interface CardProps {
   hero: Character;

@@ -30,28 +30,30 @@ interface InfoResults {
   results: Character[];
 }
 
-export async function getAllCharacters(): Promise<Character[]> {
-  const host = await fetch('https://rickandmortyapi.com/api/character/');
-  const characters: InfoResults = await host.json();
+const BASE_URL = 'https://rickandmortyapi.com/api/character/';
+
+export async function getCharacters(): Promise<Character[]> {
+  const response = await fetch(BASE_URL);
+  const characters: InfoResults = await response.json();
   const heroes = characters.results;
   return heroes;
 }
 
-export async function getCharacters(name: string): Promise<Character[]> {
-  const host = await fetch(`https://rickandmortyapi.com/api/character/?name=${name}`);
-  if (!host.ok) {
+export async function getCharactersByName(name: string): Promise<Character[]> {
+  const response = await fetch(`${BASE_URL}?name=${name}`);
+  if (!response.ok) {
     throw Error('Characters not found');
   }
-  const characters: InfoResults = await host.json();
+  const characters: InfoResults = await response.json();
   const heroes = characters.results;
   return heroes;
 }
 
-export async function getCurrentCharacter(id: number): Promise<Character> {
-  const host = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
-  if (!host.ok) {
+export async function getCharacterById(id: number): Promise<Character> {
+  const response = await fetch(`${BASE_URL}${id}`);
+  if (!response.ok) {
     throw Error('Character not found');
   }
-  const character: Character = await host.json();
+  const character: Character = await response.json();
   return character;
 }

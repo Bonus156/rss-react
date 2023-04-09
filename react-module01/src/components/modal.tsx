@@ -1,6 +1,6 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { Character } from '../models/types';
-import { getCurrentCharacter } from '../models/api';
+import { getCharacterById } from '../api/api';
 
 export interface ModalProps {
   heroID: number;
@@ -17,7 +17,7 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
   };
 
   const getHero = async () => {
-    const hero: Character = await getCurrentCharacter(heroID);
+    const hero: Character = await getCharacterById(heroID);
     setCurrentHero(hero);
     setIsLoading(false);
   };
