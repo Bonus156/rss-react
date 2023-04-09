@@ -84,7 +84,16 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
               {currentHero.name}
             </p>
             <p>Origin: {currentHero.origin.name}</p>
-            <p>Status: {currentHero.status}</p>
+            <p
+              className={
+                currentHero.status === 'Alive'
+                  ? 'text-green-800 font-medium'
+                  : 'text-red-700 font-medium'
+              }
+            >
+              <span className="text-black font-normal">Status: </span>
+              {currentHero.status}
+            </p>
             <p>Species: {currentHero.species}</p>
             <p>Gender: {currentHero.gender}</p>
             <p>Location: {currentHero.location.name}</p>
