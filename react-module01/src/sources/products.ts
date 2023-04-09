@@ -1,4 +1,4 @@
-import { Character } from '../models/types';
+import { Character, InfoResults } from '../models/types';
 
 export const heroes: Character[] = [
   {
@@ -294,3 +294,13 @@ export const heroes: Character[] = [
     created: '2017-11-04T20:32:33.144Z',
   },
 ];
+
+export const results: InfoResults = {
+  info: {
+    count: 12,
+    pages: 1,
+    next: null,
+    prev: null,
+  },
+  results: heroes,
+};
