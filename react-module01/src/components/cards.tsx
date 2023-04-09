@@ -4,14 +4,14 @@ import { Character } from '../models/types';
 
 interface CardProps {
   hero: Character;
-  setHero: (hero: Character) => void;
+  setHeroID: (heroID: number) => void;
   setVisible: (isVisible: boolean) => void;
 }
 
-export function Card({ hero, setHero, setVisible }: CardProps) {
+export function Card({ hero, setHeroID, setVisible }: CardProps) {
   const handleClick = () => {
     setVisible(true);
-    setHero(hero);
+    setHeroID(hero.id);
   };
 
   return (

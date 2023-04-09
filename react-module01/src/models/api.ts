@@ -40,7 +40,7 @@ export async function getAllCharacters(): Promise<Character[]> {
 export async function getCharacters(name: string): Promise<Character[]> {
   const host = await fetch(`https://rickandmortyapi.com/api/character/?name=${name}`);
   if (!host.ok) {
-    throw Error('Could not fetch data');
+    throw Error('Characters not found');
   }
   const characters: InfoResults = await host.json();
   const heroes = characters.results;
@@ -48,9 +48,9 @@ export async function getCharacters(name: string): Promise<Character[]> {
 }
 
 export async function getCurrentCharacter(id: number): Promise<Character> {
-  const host = await fetch(`https://rickandmortyapi.com/api/character/?id=${id}`);
+  const host = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
   if (!host.ok) {
-    throw Error('Could not fetch data');
+    throw Error('Character not found');
   }
   const character: Character = await host.json();
   return character;

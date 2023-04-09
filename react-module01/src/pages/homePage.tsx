@@ -11,7 +11,7 @@ export function HomePage() {
   const [visibilityModal, setVisibilityModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentHero, setHero] = useState<Character>(heroes[0]);
+  const [currentHeroID, setHeroID] = useState<number>(1);
 
   const getHeroes = useCallback(async () => {
     setIsLoading(true);
@@ -41,18 +41,18 @@ export function HomePage() {
     <div className="container mx-auto pt-5">
       <SearchBar setInputValue={setSearchValue} />
       <div className="flex flex-wrap gap-2">
-        {error && <div>{error}</div>}
+        {error && <div className="m-auto text-2xl font-bold text-red-800">{error}</div>}
         {isLoading && (
           <div className="m-auto shrink-0 align-middle w-12 h-12 inset-auto border-8 rounded-full border-black/40 border-t-black/90 animate-spin" />
         )}
         {!error &&
           !isLoading &&
           heroes.map((hero) => (
-            <Card hero={hero} setHero={setHero} setVisible={setVisibilityModal} key={hero.id} />
+            <Card hero={hero} setHeroID={setHeroID} setVisible={setVisibilityModal} key={hero.id} />
           ))}
       </div>
       {visibilityModal && (
-        <Modal hero={currentHero} isVisible={visibilityModal} setVisible={setVisibilityModal} />
+        <Modal heroID={currentHeroID} isVisible={visibilityModal} setVisible={setVisibilityModal} />
       )}
     </div>
   );
