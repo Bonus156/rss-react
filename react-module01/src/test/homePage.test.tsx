@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { HomePage } from '../pages/homePage';
 import { results } from '../sources/products';
@@ -15,9 +15,18 @@ describe('HomePage', () => {
     );
   });
 
-  test('is displays placeholder text', () => {
+  test('is displays placeholder text', async () => {
     render(<HomePage />);
-    expect(screen.getByPlaceholderText(/Search by name/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/Search by name/i)).toBeInTheDocument();
+    });
+  });
+
+  test('should render all cards with right text', async () => {
+    render(<HomePage />);
+    expect(await screen.findAllByText(/Name/i)).toHaveLength(12);
+    expect(await screen.findAllByText(/Human/i)).toHaveLength(11);
+    expect(await screen.findByText(/Alien/i)).toBeInTheDocument();
   });
 
   test('should render cardsField with correct number of cards', async () => {
@@ -26,7 +35,8 @@ describe('HomePage', () => {
         <HomePage />
       </MemoryRouter>
     );
-    expect(await screen.findAllByText(/Name/i)).toHaveLength(12);
-    expect(screen.getAllByRole('img')).toHaveLength(12);
+    await waitFor(() => {
+      expect(screen.getAllByRole('img')).toHaveLength(12);
+    });
   });
 });

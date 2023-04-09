@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { Character } from '../models/types';
 import { getCharacterById } from '../api/api';
 
@@ -16,15 +16,15 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
     setVisible(false);
   };
 
-  const getHero = async () => {
+  const getHero = useCallback(async () => {
     const hero: Character = await getCharacterById(heroID);
     setCurrentHero(hero);
     setIsLoading(false);
-  };
+  }, [heroID]);
 
   useEffect(() => {
     getHero();
-  });
+  }, [getHero]);
 
   return (
     <div
@@ -33,6 +33,7 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
           ? 'modal flex flex-col block justify-center w-full h-full backdrop-blur-lg fixed inset-0'
           : 'hidden'
       }
+      data-testid="modal"
       onClick={handleClick}
     >
       <div
@@ -84,6 +85,7 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
               {currentHero.name}
             </p>
             <p>Origin: {currentHero.origin.name}</p>
+            {currentHero.type && <p>Type: {currentHero.type}</p>}
             <p
               className={
                 currentHero.status === 'Alive'
