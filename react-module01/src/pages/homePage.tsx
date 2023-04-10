@@ -7,7 +7,7 @@ import { Modal } from '../components/modal';
 
 export function HomePage() {
   const [heroes, setHeroes] = useState<Character[]>([]);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('search') || '');
   const [visibilityModal, setVisibilityModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
