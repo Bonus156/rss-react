@@ -1,28 +1,27 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 
-const useUnmount = (fn: () => void) => {
-  const fnRef = useRef(fn);
-  fnRef.current = fn;
+interface SearchProps {
+  setInputValue: (value: string) => void;
+}
 
-  useEffect(() => () => fnRef.current(), []);
-};
+export function SearchBar({ setInputValue }: SearchProps) {
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('search') || '');
 
-export function SearchBar() {
-  const [inputValue, setInputValue] = useState(localStorage.getItem('search') || '');
-
-  useUnmount(() => {
-    return localStorage.setItem('search', inputValue);
-  });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem('search', searchValue);
+    setInputValue(searchValue);
+  };
 
   return (
-    <div className="py-2 relative w-1/2 text-gray-600">
+    <form className="py-2 relative w-1/2 text-gray-600" onSubmit={handleSubmit}>
       <input
         className="border-2 border-gray-300 bg-white w-full h-10 px-5 pr-16 rounded-lg text-base focus:outline-none"
         type="search"
         name="search"
-        placeholder="Search"
-        value={inputValue}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+        placeholder="Search by name"
+        value={searchValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
       />
       <button
         type="submit"
@@ -43,6 +42,6 @@ export function SearchBar() {
           />
         </svg>
       </button>
-    </div>
+    </form>
   );
 }
