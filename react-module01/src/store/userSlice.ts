@@ -14,8 +14,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<UserInfoString>) {
-      console.log(state);
-      console.log(action);
       state.cards.push({
         userName: action.payload.userName,
         birthday: action.payload.birthday,
