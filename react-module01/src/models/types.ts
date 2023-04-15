@@ -6,6 +6,14 @@ export interface UserInfo {
   image: File;
 }
 
+export interface UserInfoString {
+  userName: string;
+  birthday: string;
+  country: string;
+  isMale: boolean;
+  image: string;
+}
+
 type NameUrl = {
   name: string;
   url: string;

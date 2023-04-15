@@ -16,9 +16,11 @@
     "lint:fix": "eslint ./src --ext .ts --ext .tsx --fix"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2"
   },
   "browserslist": {
