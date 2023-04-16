@@ -41,33 +41,10 @@ export const charactersAPI = createApi({
     getCharactersByName: build.query<InfoResults, string>({
       query: (name = '') => `${name && `?name=${name}`}`,
     }),
+    getCharacterById: build.query<Character, number>({
+      query: (id) => `${id}`,
+    }),
   }),
 });
 
-export const { useGetCharactersByNameQuery } = charactersAPI;
-
-export async function getCharacters(): Promise<Character[]> {
-  const response = await fetch(BASE_URL);
-  const characters: InfoResults = await response.json();
-  const heroes = characters.results;
-  return heroes;
-}
-
-export async function getCharactersByName(name: string): Promise<Character[]> {
-  const response = await fetch(`${BASE_URL}?name=${name}`);
-  if (!response.ok) {
-    throw Error('Characters not found');
-  }
-  const characters: InfoResults = await response.json();
-  const heroes = characters.results;
-  return heroes;
-}
-
-export async function getCharacterById(id: number): Promise<Character> {
-  const response = await fetch(`${BASE_URL}${id}`);
-  if (!response.ok) {
-    throw Error('Character not found');
-  }
-  const character: Character = await response.json();
-  return character;
-}
+export const { useGetCharactersByNameQuery, useGetCharacterByIdQuery } = charactersAPI;
