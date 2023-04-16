@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Character } from '../models/types';
 
 interface TileState {
@@ -17,9 +17,15 @@ const tileSlice = createSlice({
   reducers: {
     // getHeroes(state, action) {},
     // toggleModal(state, action) {},
+    setSearchValue(state, action: PayloadAction<string>) {
+      state.searchValue = action.payload;
+    },
+    // getSearchResults(state, action: PayloadAction<string>) {
+    //   state.searchValue = action.payload;
+    // },
   },
 });
 
-// export const { getHeroes, toggleModal } = tileSlice.actions;
+export const { setSearchValue } = tileSlice.actions;
 
 export default tileSlice.reducer;

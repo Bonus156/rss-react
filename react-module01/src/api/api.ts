@@ -1,3 +1,5 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 type NameUrl = {
   name: string;
   url: string;
@@ -31,6 +33,18 @@ interface InfoResults {
 }
 
 const BASE_URL = 'https://rickandmortyapi.com/api/character/';
+
+export const charactersAPI = createApi({
+  reducerPath: 'charactersAPI',
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  endpoints: (build) => ({
+    getCharactersByName: build.query<InfoResults, string>({
+      query: (name = '') => `${name && `?name=${name}`}`,
+    }),
+  }),
+});
+
+export const { useGetCharactersByNameQuery } = charactersAPI;
 
 export async function getCharacters(): Promise<Character[]> {
   const response = await fetch(BASE_URL);
