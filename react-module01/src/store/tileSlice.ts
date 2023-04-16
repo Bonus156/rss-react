@@ -15,14 +15,9 @@ const tileSlice = createSlice({
   name: 'tiles',
   initialState,
   reducers: {
-    // getHeroes(state, action) {},
-    // toggleModal(state, action) {},
     setSearchValue(state, action: PayloadAction<string>) {
       state.searchValue = action.payload;
     },
-    // getSearchResults(state, action: PayloadAction<string>) {
-    //   state.searchValue = action.payload;
-    // },
   },
 });
 

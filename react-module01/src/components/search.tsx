@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setSearchValue } from '../store/tileSlice';
 
-// interface SearchProps {
-//   setInputValue: (value: string) => void;
-// }
-
 export function SearchBar() {
   const dispatch = useAppDispatch();
   const searchValue = useAppSelector<string>((state) => state.tile.searchValue);
@@ -14,9 +10,6 @@ export function SearchBar() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(setSearchValue(inputSearchValue));
-    // dispatch(getSearchValue(searchValue));
-    // localStorage.setItem('search', searchValue);
-    // setInputValue(searchValue);
   };
 
   return (

@@ -4,6 +4,25 @@ import '@testing-library/jest-dom';
 import { Modal } from '../components/modal';
 import { results, singleCharacter } from '../sources/products';
 import { HomePage } from '../pages/homePage';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+
+const mockStore = configureStore([]);
+const initialState = {
+  charactersAPI: {
+    queries: {
+      'getCharactersByName("")': {
+        data: {
+          results: results.results,
+        },
+      },
+    },
+  },
+  tile: {
+    searchValue: '',
+  },
+};
+const store = mockStore(initialState);
 
 let isVisible = true;
 function setVisible(visibility: boolean) {
@@ -38,13 +57,17 @@ describe('Modal Component', () => {
   });
 
   test('should open modal window by click on image at homePage', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({ json: () => new Promise((resolve) => resolve(results)) });
-        })
+    // global.fetch = jest.fn().mockImplementationOnce(
+    //   () =>
+    //     new Promise((resolve) => {
+    //       resolve({ json: () => new Promise((resolve) => resolve(results)) });
+    //     })
+    // );
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
     );
-    render(<HomePage />);
     global.fetch = jest.fn().mockImplementationOnce(
       () =>
         new Promise((resolve) => {
@@ -68,22 +91,26 @@ describe('Modal Component', () => {
   });
 
   test('should close modal window by click on overlay after opening', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({ json: () => new Promise((resolve) => resolve(results)) });
-        })
+    // global.fetch = jest.fn().mockImplementationOnce(
+    //   () =>
+    //     new Promise((resolve) => {
+    //       resolve({ json: () => new Promise((resolve) => resolve(results)) });
+    //     })
+    // );
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
     );
-    render(<HomePage />);
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({
-            json: () => new Promise((resolve) => resolve(singleCharacter)),
-            ok: () => new Promise((resolve) => resolve(true)),
-          });
-        })
-    );
+    // global.fetch = jest.fn().mockImplementationOnce(
+    //   () =>
+    //     new Promise((resolve) => {
+    //       resolve({
+    //         json: () => new Promise((resolve) => resolve(singleCharacter)),
+    //         ok: () => new Promise((resolve) => resolve(true)),
+    //       });
+    //     })
+    // );
     await waitFor(() => {
       const abradolf = screen.getAllByRole('img')[6];
       act(() => {

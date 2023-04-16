@@ -9,9 +9,11 @@ import store from '../store';
 describe('test Pages and Navigation components', () => {
   it('render AboutPage', () => {
     render(
-      <MemoryRouter initialEntries={['/about']}>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/about']}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
     expect(screen.getByRole('heading')).toBeInTheDocument();
     expect(screen.getByTestId('description')).toBeInTheDocument();
