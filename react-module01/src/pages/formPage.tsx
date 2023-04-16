@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { validateImageFile } from '../actions/validation';
-// import { UserInfoString } from '../models/types';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { FormCards } from '../components/formCards';
-import { addUser } from '../store/userSlice';
+import { addUser, showConfirmation } from '../store/userSlice';
 
 type FormFields = {
   userName: string;
@@ -16,9 +14,8 @@ type FormFields = {
 };
 
 export function FormPage() {
-  const [confirmText, setConfirmText] = useState('');
-
   const dispatch = useAppDispatch();
+  const confirmText = useAppSelector<string>((state) => state.user.confirmation);
 
   const {
     register,
@@ -37,9 +34,9 @@ export function FormPage() {
     };
 
     dispatch(addUser(newCard));
-    setConfirmText('Submit Successfull');
+    dispatch(showConfirmation('Submit Successfull'));
     setTimeout(() => {
-      setConfirmText('');
+      dispatch(showConfirmation(''));
     }, 3000);
     reset();
   };

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReduser from './userSlice';
+import tileReduser from './tileSlice';
 
 const store = configureStore({
   reducer: {
     user: userReduser,
+    tile: tileReduser,
   },
 });
 

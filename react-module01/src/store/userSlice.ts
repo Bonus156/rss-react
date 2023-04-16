@@ -3,10 +3,12 @@ import { UserInfoString } from '../models/types';
 
 interface UserState {
   cards: UserInfoString[];
+  confirmation: string;
 }
 
 const initialState: UserState = {
   cards: [],
+  confirmation: '',
 };
 
 const userSlice = createSlice({
@@ -22,9 +24,12 @@ const userSlice = createSlice({
         image: action.payload.image,
       });
     },
+    showConfirmation(state, action: PayloadAction<string>) {
+      state.confirmation = action.payload;
+    },
   },
 });
 
-export const { addUser } = userSlice.actions;
+export const { addUser, showConfirmation } = userSlice.actions;
 
 export default userSlice.reducer;
