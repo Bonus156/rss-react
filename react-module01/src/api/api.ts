@@ -32,17 +32,17 @@ interface InfoResults {
   results: Character[];
 }
 
-const BASE_URL = 'https://rickandmortyapi.com/api/character/';
+const BASE_URL = 'https://rickandmortyapi.com/api/character';
 
 export const charactersAPI = createApi({
   reducerPath: 'charactersAPI',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
     getCharactersByName: build.query<InfoResults, string>({
-      query: (name = '') => `${name && `?name=${name}`}`,
+      query: (name = '') => `/${name && `?name=${name}`}`,
     }),
     getCharacterById: build.query<Character, number>({
-      query: (id) => `${id}`,
+      query: (id) => `/${id}`,
     }),
   }),
 });
