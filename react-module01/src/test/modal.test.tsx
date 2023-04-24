@@ -1,11 +1,11 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import 'whatwg-fetch';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { Modal } from '../components/modal';
 import { HomePage } from '../pages/homePage';
 import { Provider } from 'react-redux';
 import store from '../store/index';
-import 'whatwg-fetch';
 import server from './server';
 
 let isVisible = true;
