@@ -6,6 +6,14 @@ export interface UserInfo {
   image: File;
 }
 
+export interface UserInfoString {
+  userName: string;
+  birthday: string;
+  country: string;
+  isMale: boolean;
+  image: string;
+}
+
 type NameUrl = {
   name: string;
   url: string;
@@ -42,4 +50,11 @@ type Info = {
 export interface InfoResults {
   info: Info;
   results: Character[];
+}
+
+export interface SerializedError {
+  name?: string;
+  message?: string;
+  stack?: string;
+  code?: string;
 }

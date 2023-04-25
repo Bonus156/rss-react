@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { validateImageFile } from '../actions/validation';
-import { UserInfo } from '../models/types';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { FormCards } from '../components/formCards';
+import { addUser, showConfirmation } from '../store/userSlice';
 
 type FormFields = {
   userName: string;
@@ -14,8 +14,8 @@ type FormFields = {
 };
 
 export function FormPage() {
-  const [cards, setCards] = useState<UserInfo[]>([]);
-  const [confirmText, setConfirmText] = useState('');
+  const dispatch = useAppDispatch();
+  const confirmText = useAppSelector<string>((state) => state.user.confirmation);
 
   const {
     register,
@@ -30,13 +30,13 @@ export function FormPage() {
       birthday: data.birthday.toDateString(),
       country: data.country,
       isMale: data.question === 'male',
-      image: data.file[0],
+      image: URL.createObjectURL(data.file[0]),
     };
 
-    setCards([...cards, newCard]);
-    setConfirmText('Submit Successfull');
+    dispatch(addUser(newCard));
+    dispatch(showConfirmation('Submit Successfull'));
     setTimeout(() => {
-      setConfirmText('');
+      dispatch(showConfirmation(''));
     }, 3000);
     reset();
   };
@@ -150,7 +150,7 @@ export function FormPage() {
           {confirmText && <span className="ml-2 font-bold text-green-800">{confirmText}</span>}
         </div>
       </form>
-      <FormCards cardsList={cards} />
+      <FormCards />
     </>
   );
 }

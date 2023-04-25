@@ -1,17 +1,19 @@
 import { UserCard } from './userCard';
-import { UserInfo } from '../models/types';
+import { UserInfoString } from '../models/types';
 import { v1 as uuidv1 } from 'uuid';
+import { useAppSelector } from '../store/hooks';
 
 export interface FormCardsProps {
-  cardsList: UserInfo[];
+  cardsList: UserInfoString[];
 }
 
-export function FormCards(cards: FormCardsProps) {
-  const { cardsList } = cards;
+export function FormCards() {
+  const cards: UserInfoString[] = useAppSelector<UserInfoString[]>((state) => state.user.cards);
+
   return (
     <div className="container mx-auto pt-5">
       <div className="flex flex-wrap gap-2">
-        {cardsList.map((card) => (
+        {cards.map((card) => (
           <UserCard
             key={uuidv1()}
             userName={card.userName}

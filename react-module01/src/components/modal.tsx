@@ -1,6 +1,5 @@
-import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
-import { Character } from '../models/types';
-import { getCharacterById } from '../api/api';
+import React, { MouseEvent } from 'react';
+import { useGetCharacterByIdQuery } from '../api/api';
 
 export interface ModalProps {
   heroID: number;
@@ -9,22 +8,11 @@ export interface ModalProps {
 }
 
 export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
-  const [currentHero, setCurrentHero] = useState<Character | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data, isLoading } = useGetCharacterByIdQuery(heroID);
 
   const handleClick = () => {
     setVisible(false);
   };
-
-  const getHero = useCallback(async () => {
-    const hero: Character = await getCharacterById(heroID);
-    setCurrentHero(hero);
-    setIsLoading(false);
-  }, [heroID]);
-
-  useEffect(() => {
-    getHero();
-  }, [getHero]);
 
   return (
     <div
@@ -43,7 +31,7 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
         {isLoading && (
           <div className="m-auto shrink-0 align-middle w-12 h-12 inset-auto border-8 rounded-full border-black/40 border-t-black/90 animate-spin" />
         )}
-        {currentHero && (
+        {data && (
           <>
             <div
               className="inline-block self-end absolute cursor-pointer hover:scale-105"
@@ -79,28 +67,26 @@ export function Modal({ heroID, isVisible, setVisible }: ModalProps) {
                 />
               </svg>
             </div>
-            <img src={currentHero.image} className="w-full" alt={currentHero.name} />
+            <img src={data.image} className="w-full" alt={data.name} />
             <p className="font-bold text-lg">
               <span className="font-normal">Name: </span>
-              {currentHero.name}
+              {data.name}
             </p>
-            <p>Origin: {currentHero.origin.name}</p>
-            {currentHero.type && <p>Type: {currentHero.type}</p>}
+            <p>Origin: {data.origin.name}</p>
+            {data.type && <p>Type: {data.type}</p>}
             <p
               className={
-                currentHero.status === 'Alive'
-                  ? 'text-green-800 font-medium'
-                  : 'text-red-700 font-medium'
+                data.status === 'Alive' ? 'text-green-800 font-medium' : 'text-red-700 font-medium'
               }
             >
               <span className="text-black font-normal">Status: </span>
-              {currentHero.status}
+              {data.status}
             </p>
-            <p>Species: {currentHero.species}</p>
-            <p>Gender: {currentHero.gender}</p>
-            <p>Location: {currentHero.location.name}</p>
-            <p className="text-sm">Created: {new Date(currentHero.created).toDateString()}</p>
-            <p className="my-2 text-sm self-start">ID: {currentHero.id}</p>
+            <p>Species: {data.species}</p>
+            <p>Gender: {data.gender}</p>
+            <p>Location: {data.location.name}</p>
+            <p className="text-sm">Created: {new Date(data.created).toDateString()}</p>
+            <p className="my-2 text-sm self-start">ID: {data.id}</p>
           </>
         )}
       </div>

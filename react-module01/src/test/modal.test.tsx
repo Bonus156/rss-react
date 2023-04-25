@@ -1,9 +1,12 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import 'whatwg-fetch';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { Modal } from '../components/modal';
-import { results, singleCharacter } from '../sources/products';
 import { HomePage } from '../pages/homePage';
+import { Provider } from 'react-redux';
+import store from '../store/index';
+import server from './server';
 
 let isVisible = true;
 function setVisible(visibility: boolean) {
@@ -11,48 +14,38 @@ function setVisible(visibility: boolean) {
 }
 
 describe('Modal Component', () => {
-  beforeEach(async () => {
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({
-            json: () => new Promise((resolve) => resolve(singleCharacter)),
-            ok: () => new Promise((resolve) => resolve(true)),
-          });
-        })
-    );
-  });
+  beforeAll(() => server.listen());
+  afterAll(() => server.close());
+  afterEach(() => server.resetHandlers());
 
   test('should display text in modal window', async () => {
-    render(<Modal heroID={7} isVisible={isVisible} setVisible={setVisible} />);
+    render(
+      <Provider store={store}>
+        <Modal heroID={7} isVisible={isVisible} setVisible={setVisible} />
+      </Provider>
+    );
+
     expect(await screen.findByText(/Abradolf Lincler/i)).toBeInTheDocument();
     expect(await screen.findByText(/Testicle Monster Dimension/i)).toBeInTheDocument();
     expect(await screen.findByText(/Genetic experiment/i)).toBeInTheDocument();
   });
 
   test('should render modal window with image', async () => {
-    render(<Modal heroID={7} isVisible={isVisible} setVisible={setVisible} />);
+    render(
+      <Provider store={store}>
+        <Modal heroID={7} isVisible={isVisible} setVisible={setVisible} />
+      </Provider>
+    );
     await waitFor(() => {
       expect(screen.getByRole('img')).toBeInTheDocument();
     });
   });
 
   test('should open modal window by click on image at homePage', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({ json: () => new Promise((resolve) => resolve(results)) });
-        })
-    );
-    render(<HomePage />);
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({
-            json: () => new Promise((resolve) => resolve(singleCharacter)),
-            ok: () => new Promise((resolve) => resolve(true)),
-          });
-        })
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
     );
     await waitFor(() => {
       const abradolf = screen.getAllByRole('img')[6];
@@ -68,22 +61,12 @@ describe('Modal Component', () => {
   });
 
   test('should close modal window by click on overlay after opening', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({ json: () => new Promise((resolve) => resolve(results)) });
-        })
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
     );
-    render(<HomePage />);
-    global.fetch = jest.fn().mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          resolve({
-            json: () => new Promise((resolve) => resolve(singleCharacter)),
-            ok: () => new Promise((resolve) => resolve(true)),
-          });
-        })
-    );
+
     await waitFor(() => {
       const abradolf = screen.getAllByRole('img')[6];
       act(() => {

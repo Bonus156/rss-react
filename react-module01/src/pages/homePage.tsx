@@ -1,53 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SearchBar } from '../components/search';
 import { Card } from '../components/cards';
-import { getCharacters, getCharactersByName } from '../api/api';
-import { Character } from '../models/types';
 import { Modal } from '../components/modal';
+import { useGetCharactersByNameQuery } from '../api/api';
+import { useAppSelector } from '../store/hooks';
 
 export function HomePage() {
-  const [heroes, setHeroes] = useState<Character[]>([]);
-  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('search') || '');
   const [visibilityModal, setVisibilityModal] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentHeroID, setHeroID] = useState<number>(1);
 
-  const getHeroes = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    let data: Character[];
-    try {
-      if (searchValue) {
-        data = await getCharactersByName(searchValue);
-      } else {
-        data = await getCharacters();
-      }
-      setHeroes(data);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchValue]);
+  const searchValue = useAppSelector<string>((state) => state.tile.searchValue);
 
-  useEffect(() => {
-    getHeroes();
-  }, [getHeroes]);
+  const { data, error, isLoading } = useGetCharactersByNameQuery(searchValue);
+
+  const err404 = error && 'status' in error && error.status === 404 ? error : undefined;
 
   return (
     <div className="container mx-auto pt-5">
-      <SearchBar setInputValue={setSearchValue} />
+      <SearchBar />
       <div className="flex flex-wrap gap-2">
-        {error && <div className="m-auto text-2xl font-bold text-red-800">{error}</div>}
+        {err404 && !isLoading && (
+          <div className="m-auto text-2xl font-bold text-red-800">{'Characters not found'}</div>
+        )}
         {isLoading && (
           <div className="m-auto shrink-0 align-middle w-12 h-12 inset-auto border-8 rounded-full border-black/40 border-t-black/90 animate-spin" />
         )}
-        {!error &&
+        {!err404 &&
           !isLoading &&
-          heroes.map((hero) => (
+          data?.results.map((hero) => (
             <Card hero={hero} setHeroID={setHeroID} setVisible={setVisibilityModal} key={hero.id} />
           ))}
       </div>

@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setSearchValue } from '../store/tileSlice';
 
-interface SearchProps {
-  setInputValue: (value: string) => void;
-}
-
-export function SearchBar({ setInputValue }: SearchProps) {
-  const [searchValue, setSearchValue] = useState(localStorage.getItem('search') || '');
+export function SearchBar() {
+  const dispatch = useAppDispatch();
+  const searchValue = useAppSelector<string>((state) => state.tile.searchValue);
+  const [inputSearchValue, setInputSearchValue] = useState(searchValue);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('search', searchValue);
-    setInputValue(searchValue);
+    dispatch(setSearchValue(inputSearchValue));
   };
 
   return (
@@ -20,8 +19,8 @@ export function SearchBar({ setInputValue }: SearchProps) {
         type="search"
         name="search"
         placeholder="Search by name"
-        value={searchValue}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
+        value={inputSearchValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSearchValue(e.target.value)}
       />
       <button
         type="submit"
