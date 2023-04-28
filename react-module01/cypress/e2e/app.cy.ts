@@ -1,6 +1,6 @@
 describe('Home Page', () => {
   beforeEach(() => {
-    cy.visit('');
+    cy.visit('/');
   });
   it('should have search bar', () => {
     cy.get('input').should('have.value', '');
