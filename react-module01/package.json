@@ -10,12 +10,14 @@
     "test": "jest",
     "test:cypress": "start-server-and-test dev http://localhost:5173 cypress",
     "cypress": "cypress open",
+    "cypress:coverage": "start-server-and-test dev http://localhost:5173 cy:e2e",
     "coverage": "jest --watchAll --coverage",
     "dev": "ts-node server",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts --ext .tsx",
-    "lint:fix": "eslint ./src --ext .ts --ext .tsx --fix"
+    "lint:fix": "eslint ./src --ext .ts --ext .tsx --fix",
+    "cy:e2e": "npx cypress run --e2e && npx nyc report && npx nyc report --reporter=text-summary"
   },
   "dependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
