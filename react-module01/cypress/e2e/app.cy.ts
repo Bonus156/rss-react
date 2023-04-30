@@ -122,4 +122,23 @@ describe('Forms Page', () => {
     cy.get('input[type="submit"]').click();
     cy.contains('Your agreement is required').should('not.exist');
   });
+  it('should show validation warnings', () => {
+    cy.get('input[type="text"]').type('pear');
+    cy.get('input[type="date"]').type('2102-05-01');
+    cy.get('select').select('ukraine');
+    cy.get('input[type="radio"][value="female"]').check();
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'testFile.svg',
+      lastModified: Date.now(),
+    });
+    cy.get('input[type="checkbox"]').check();
+    cy.get('input[type="submit"]').click();
+    cy.contains('Type your name').should('not.exist');
+    cy.contains('First letter should be uppercase').should('exist');
+    cy.contains('Choose birthday date').should('not.exist');
+    cy.contains('Should be before today').should('exist');
+    cy.contains('Choose image file').should('not.exist');
+    cy.contains('Upload .jpg or .png file').should('exist');
+  });
 });
