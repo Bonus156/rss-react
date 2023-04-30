@@ -41,7 +41,7 @@ async function createServer() {
           console.error(e);
         },
       });
-    } catch (e) {
+    } catch (e: unknown) {
       if (e instanceof Error) {
         vite.ssrFixStacktrace(e);
         next(e);
