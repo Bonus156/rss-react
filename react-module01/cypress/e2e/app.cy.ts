@@ -140,5 +140,28 @@ describe('Forms Page', () => {
     cy.contains('Should be before today').should('exist');
     cy.contains('Choose image file').should('not.exist');
     cy.contains('Upload .jpg or .png file').should('exist');
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'testImage.png',
+      lastModified: Date.now(),
+    });
+    cy.get('input[type="submit"]').click();
+    cy.contains('Upload .jpg or .png file').should('not.exist');
+  });
+  it('should show submit successfull message', () => {
+    cy.get('input[type="text"]').type('Pear');
+    cy.get('input[type="date"]').type('2002-05-01');
+    cy.get('select').select('ukraine');
+    cy.get('input[type="radio"][value="female"]').check();
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'testImage.jpeg',
+      lastModified: Date.now(),
+    });
+    cy.get('input[type="checkbox"]').check();
+    cy.get('input[type="submit"]').click();
+    cy.contains('Submit Successfull').should('exist');
+    cy.get('div.container div:only-of-type').children().should('contain.text', 'Ms Pear');
+    cy.contains('Submit Successfull').should('not.exist');
   });
 });
