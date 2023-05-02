@@ -5,7 +5,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
-    "prettier"
+    "prettier",
+    "plugin:cypress/recommended"
   ],
   "env": {
     "browser": true,
