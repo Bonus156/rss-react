@@ -37,7 +37,7 @@ export function FormPage() {
     dispatch(showConfirmation('Submit Successfull'));
     setTimeout(() => {
       dispatch(showConfirmation(''));
-    }, 3000);
+    }, 2000);
     reset();
   };
 
